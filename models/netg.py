@@ -49,23 +49,23 @@ class NetG(nn.Module):
     def forward(self,input):
         ngf = self.ngf
 
-        x = self.convT1(input)          # 输入：(1, nz, 1, 1)        输出：(1, ngf*8, 4, 4)
+        x = self.convT1(input)          # 输入：(batch_size, nz, 1, 1)        输出：(batch_size, ngf*8, 4, 4)
         nn.BatchNorm2d(ngf * 8)
         nn.ReLU(True)
 
-        x = self.convT2(x)              # 输入：(1, ngf*8, 4, 4)     输出：(1, ngf*4, 8, 8)
+        x = self.convT2(x)              # 输入：(batch_size, ngf*8, 4, 4)     输出：(batch_size, ngf*4, 8, 8)
         nn.BatchNorm2d(ngf * 4)
         nn.ReLU(True)
 
-        x = self.convT2(x)              # 输入：(1, ngf*4, 8, 8)     输出：(1, ngf*2, 16, 16)
+        x = self.convT3(x)              # 输入：(batch_size, ngf*4, 8, 8)     输出：(batch_size, ngf*2, 16, 16)
         nn.BatchNorm2d(ngf * 2) 
         nn.ReLU(True)
 
-        x = self.convT2(x)              # 输入：(1, ngf*2, 16, 16)   输出：(1, ngf, 32, 32)
+        x = self.convT4(x)              # 输入：(batch_size, ngf*2, 16, 16)   输出：(batch_size, ngf, 32, 32)
         nn.BatchNorm2d(ngf)
         nn.ReLU(True)
 
-        x = self.convT2(x)              # 输入：(1, ngf, 32, 32)   输出：(1, 3, 96, 96)
+        x = self.convT5(x)              # 输入：(1, ngf, 32, 32)   输出：(1, 3, 96, 96)
         nn.Tanh
 
         return x

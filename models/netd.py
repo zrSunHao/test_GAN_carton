@@ -56,20 +56,20 @@ class NetD(nn.Module):
     def forward(self, input):
         ndf = self.ndf
 
-        x = self.conv1(input)               # 输入：(1, 3, 96, 96)           输出：(1, ngf, 32, 32)
-        x = nn.LeakyReLU(0.2, inplace=True)
+        x = self.conv1(input)               # 输入：(batch_size, 3, 96, 96)           输出：(batch_size, ngf, 32, 32)
+        nn.LeakyReLU(0.2, inplace=True)
 
-        x = self.conv2(x)                   # 输入：(1, ngf, 32, 32)         输出：(1, ngf*2, 16, 16)
-        x = nn.BatchNorm2d(ndf * 2)
-        x = nn.LeakyReLU(0.2, inplace=True)
+        x = self.conv2(x)                   # 输入：(batch_size, ngf, 32, 32)         输出：(batch_size, ngf*2, 16, 16)
+        nn.BatchNorm2d(ndf * 2)
+        nn.LeakyReLU(0.2, inplace=True)
 
-        x = self.conv3(x)                   # 输入：(1, ngf*2, 16, 16)       输出：(1, ngf*4, 8, 8)
-        x = nn.BatchNorm2d(ndf * 4)
-        x = nn.LeakyReLU(0.2, inplace=True)
+        x = self.conv3(x)                   # 输入：(batch_size, ngf*2, 16, 16)       输出：(batch_size, ngf*4, 8, 8)
+        nn.BatchNorm2d(ndf * 4)
+        nn.LeakyReLU(0.2, inplace=True)
 
-        x = self.conv4(x)                   # 输入：(1, ngf*4, 8, 8)         输出：(1, ngf*8, 4, 4)
-        x = nn.BatchNorm2d(ndf * 8)
-        x = nn.LeakyReLU(0.2, inplace=True)
+        x = self.conv4(x)                   # 输入：(batch_size, ngf*4, 8, 8)         输出：(batch_size, ngf*8, 4, 4)
+        nn.BatchNorm2d(ndf * 8)
+        nn.LeakyReLU(0.2, inplace=True)
 
         x = self.conv5(x)                       
         return x.view(-1)
