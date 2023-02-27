@@ -100,14 +100,20 @@ for epoch in iter(epochs):
             error_g.backward()
             optimizer_g.step()
             errorg_meter.add(error_g.item())
-    
+
         if cfg.vis_use and ii % cfg.plot_every == cfg.plot_every - 1:
-            ## 可视化
+            # 可视化
             fix_fake_imgs = netg(fix_noises)
-            vis.images(fix_fake_imgs.detach().cpu().numpy()[:64] * 0.5 + 0.5, win='fixfake')
-            vis.images(real_image.data.cpu().numpy()[:64] * 0.5 + 0.5, win='real')
+            vis.images(fix_fake_imgs.detach().cpu().numpy()
+                       [:64] * 0.5 + 0.5, win='fixfake')
+            vis.images(real_image.data.cpu().numpy()
+                       [:64] * 0.5 + 0.5, win='real')
             vis.plot('errord', errord_meter.value()[0])
             vis.plot('errorg', errorg_meter.value()[0])
+
+        if ii % 200 == 0:
+            print('epoch:%3s/%3s ----> %4s/%4s' %
+                  (epoch, cfg.max_epoch, ii, len(dataloader)))
 
     if (epoch+1) % cfg.save_every == 0:                     # 保存模型、图片
         fix_fake_imgs = netg(fix_noises)
@@ -118,3 +124,5 @@ for epoch in iter(epochs):
                (cfg.models_root, epoch+1))
         t.save(netg.state_dict(), '%s/netg_%s.pth' %
                (cfg.models_root, epoch+1))
+        errord_meter.reset()
+        errorg_meter.reset()

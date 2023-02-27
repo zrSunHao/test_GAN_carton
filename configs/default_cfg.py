@@ -9,7 +9,7 @@ class DefaultConfig(object):
     device = 'cuda'                         # 使用的设备 cuda/cpu
 
     # 工具配置信息
-    vis_use = False                         # 是否使用 Visdom 可视化
+    vis_use = True                         # 是否使用 Visdom 可视化
     vis_env = 'GAN'                         # Visdom 的 env
     plot_every = 20                         # 每间隔 20 个batch，Visdom 画图一次
 
