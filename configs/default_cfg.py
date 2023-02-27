@@ -34,7 +34,7 @@ class DefaultConfig(object):
 
     # 测试相关的配置
     gen_img = 'result.png'                  # 保存的测试图片名称
-    gen_search_num = 5000                   # 生成的图像数目
+    gen_search_num = 500                   # 生成的图像数目
     gen_num = 64                            # 挑选评分最好的图片数目
     gen_mean = 0                            # 噪声的均值
     gen_std = 1                             # 噪声的方差

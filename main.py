@@ -3,17 +3,13 @@ import torch as t
 from torch.utils.data import DataLoader
 import torchvision as tv
 import os
-import tqdm
-from torchnet.meter import AverageValueMeter
 
-from tools import visualizer
 from configs import DefaultCfg
 from models import NetG, NetD
 
 # 实例化配置类
 cfg = DefaultCfg()
 device = t.device('cuda') if cfg.device == 'cuda' else t.device('cpu')
-# vis = visualizer(cfg.vis_env)
 
 # 预处理数据，加载数据
 transforms = tv.transforms.Compose([
@@ -103,8 +99,9 @@ for epoch in iter(epochs):
 
     if (epoch+1) % cfg.save_every == 0:                     # 保存模型、图片
         fix_fake_imgs = netg(fix_noises)
-        tv.utils.save_image(fix_fake_imgs[64], '%s/%s.png' %
-                            (cfg.imgs_root, epoch+1), normalize=True, range=(-1, 1))
+        img_path = '%s/%s.png' % (cfg.imgs_root, epoch+1)
+        tv.utils.save_image(
+            fix_fake_imgs[64], img_path, normalize=True, range=(-1, 1))
         t.save(netd.state_dict(), '%s/netd_%s.pth' %
                (cfg.models_root, epoch+1))
         t.save(netg.state_dict(), '%s/netg_%s.pth' %
