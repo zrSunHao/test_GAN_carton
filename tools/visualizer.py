@@ -12,7 +12,7 @@ self.line(t.arange(0,10), t.arange(1,11))
 class Visualizer(object):
 
     def __init__(self, env='GAN', **kwargs):
-        self.vis = visdom.Visdom(env=env, **kwargs)
+        self.vis = visdom.Visdom(env=env, use_incoming_socket=False,**kwargs)
         self.index = {}  # 记录待绘制点的下标，例如：保存('loss',23)，即loss的第23个点
         self.log_text = ''
 

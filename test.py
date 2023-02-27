@@ -47,3 +47,5 @@ with t.no_grad():
     img_path = '%s/%s' % (cfg.imgs_root, cfg.gen_img)
     tv.utils.save_image(t.stack(results), img_path,
                         normalize=True, range=(-1, 1))
+    
+print("Image generate success!")
