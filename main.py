@@ -61,7 +61,7 @@ errord_meter = AverageValueMeter()
 errorg_meter = AverageValueMeter()
 epochs = range(cfg.max_epoch)
 for epoch in iter(epochs):
-    if epoch+1 <= cfg.cur_epoch:
+    if epoch+1 < cfg.cur_epoch:
         continue
     for ii, (imgs, _) in enumerate(dataloader):
         real_image = imgs.to(device)
@@ -76,9 +76,10 @@ for epoch in iter(epochs):
             # 计算损失函数
             r_f_diff = (r_preds - f_preds.mean()).clamp(max=1)
             f_r_diff = (f_preds - r_preds.mean()).clamp(min=-1)
-            loss_d_real = (1-r_f_diff).mean()
-            loss_d_fake = (1+f_r_diff).mean()
+            loss_d_real = (1 - r_f_diff).mean()
+            loss_d_fake = (1 + f_r_diff).mean()
             loss_d = loss_d_real + loss_d_fake
+
             # 反向传播
             loss_d.backward()
             optimizer_d.step()
@@ -94,6 +95,7 @@ for epoch in iter(epochs):
             # 计算损失函数
             r_f_diff = r_preds - t.mean(f_preds)
             f_r_diff = f_preds - t.mean(r_preds)
+
             error_g = t.mean(t.nn.ReLU()(1+r_f_diff)) + \
                 t.mean(t.nn.ReLU()(1-f_r_diff))
             # 反向传播
@@ -113,13 +115,13 @@ for epoch in iter(epochs):
 
         if ii % 200 == 0:
             print('epoch:%3s/%3s ----> %4s/%4s' %
-                  (epoch, cfg.max_epoch, ii, len(dataloader)))
+                  (epoch+1, cfg.max_epoch, ii, len(dataloader)))
 
     if (epoch+1) % cfg.save_every == 0:                     # 保存模型、图片
-        fix_fake_imgs = netg(fix_noises)
+        fix_fake_imgs = netg(fix_noises).detach()
         img_path = '%s/%s.png' % (cfg.imgs_root, epoch+1)
         tv.utils.save_image(
-            fix_fake_imgs[64], img_path, normalize=True, range=(-1, 1))
+            fix_fake_imgs[:64], img_path, normalize=True, range=(-1, 1))
         t.save(netd.state_dict(), '%s/netd_%s.pth' %
                (cfg.models_root, epoch+1))
         t.save(netg.state_dict(), '%s/netg_%s.pth' %
