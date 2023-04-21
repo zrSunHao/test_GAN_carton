@@ -29,8 +29,8 @@ class DefaultConfig(object):
     ndf = 64                                # 判别器的特征图数
     g_every = 2                             # 每 2 个batch 训练一次生成器
     d_every = 1                             # 每 1 个 batch 训练一次判别器
-    netg_path = None               # 与训练的生成器模型路径
-    netd_path = None                # 预训练的判别器模型路径
+    netg_path = 'netg_20.pth'               # 与训练的生成器模型路径
+    netd_path = 'netd_20.pth'                # 预训练的判别器模型路径
 
     # 测试相关的配置
     gen_img = 'result.png'                  # 保存的测试图片名称
